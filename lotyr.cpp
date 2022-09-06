@@ -1,3 +1,4 @@
+#include <cstring>
 #include <exception>
 #include <memory>
 
@@ -9,62 +10,78 @@
 
 #include "lotyr.h"
 
-thread_local std::unique_ptr<valhalla::tyr::actor_t> actor;
-thread_local std::unique_ptr<std::string> response_str;
-thread_local std::unique_ptr<std::string> error_str;
+struct lotyr_t {
+  std::unique_ptr<valhalla::tyr::actor_t> actor;
+};
 
-extern "C" int lotyr_init(char *config_path) {
+struct lotyr_error_t {
+  std::string message;
+};
+
+lotyr_error_t *lotyr_unknown_error() {
+  lotyr_error_t *error = new lotyr_error_t;
+  error->message = std::string("Unknown error");
+  return error;
+}
+
+lotyr_error_t *
+lotyr_valhalla_error(valhalla::valhalla_exception_t valhalla_error) {
+  lotyr_error_t *error = new lotyr_error_t;
+  error->message = valhalla_error.message;
+  return error;
+}
+
+// TODO: make sure there are no memory leaks in the case of errors
+
+extern "C" lotyr_error_t *lotyr_new(lotyr_t **lotyr_dest,
+                                    const char *config_path) {
   try {
     // Load the configuration
     std::string config_file(config_path);
     boost::property_tree::ptree config;
     rapidjson::read_json(config_file, config);
 
-    // Initialize the actor
-    actor = std::make_unique<valhalla::tyr::actor_t>(
+    lotyr_t *lotyr = new lotyr_t;
+    lotyr->actor = std::make_unique<valhalla::tyr::actor_t>(
         valhalla::tyr::actor_t(config));
+    *lotyr_dest = lotyr;
 
-    return 1;
+    return nullptr;
   } catch (valhalla::valhalla_exception_t e) {
-    error_str = std::make_unique<std::string>(e.message);
-    return 0;
-  } catch (...) {
-    error_str = nullptr;
-    return 0;
+    lotyr_error_t *error = new lotyr_error_t;
+    error->message = e.message;
+    return error;
+  } catch (...) { // TODO: better rapidjson error handling
+    return lotyr_unknown_error();
   }
 }
 
-extern "C" int lotyr_deinit(void) {
-  try {
-    actor = nullptr;
+extern "C" lotyr_error_t *lotyr_free(lotyr_t *lotyr) {
+  delete lotyr;
 
-    return 1;
-  } catch (valhalla::valhalla_exception_t e) {
-    error_str = std::make_unique<std::string>(e.message);
-    return 0;
-  } catch (...) {
-    error_str = nullptr;
-    return 0;
-  }
+  return nullptr;
 }
 
-extern "C" const char *lotyr_route(char *request) {
+extern "C" lotyr_error_t *lotyr_route(lotyr_t *lotyr, const char *request,
+                                      char **response) {
   try {
     std::string request_str(request);
-    response_str = std::make_unique<std::string>(actor->route(request_str));
-    return response_str->c_str();
+    std::string response_str = lotyr->actor->route(request_str);
+    *response = strdup(response_str.c_str());
+
+    return nullptr;
   } catch (valhalla::valhalla_exception_t e) {
-    error_str = std::make_unique<std::string>(e.message);
-    return NULL;
+    return lotyr_valhalla_error(e);
   } catch (...) {
-    error_str = nullptr;
-    return NULL;
+    return lotyr_unknown_error();
   }
 }
 
-extern "C" const char *lotyr_error(void) {
-  if (error_str)
-    return error_str->c_str();
-  else
-    return NULL;
+extern "C" const char *lotyr_error_message(const lotyr_error_t *error) {
+  if (error == nullptr)
+    return "No error";
+
+  return error->message.c_str();
 }
+
+extern "C" void lotyr_error_free(lotyr_error_t *error) { delete error; }
