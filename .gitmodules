@@ -1,3 +1,6 @@
-[submodule "valhalla"]
-	path = valhalla
+[submodule "third_party/valhalla"]
+	path = third_party/valhalla
 	url = https://github.com/valhalla/valhalla
+[submodule "third_party/protobuf"]
+	path = third_party/protobuf
+	url = https://github.com/protocolbuffers/protobuf
