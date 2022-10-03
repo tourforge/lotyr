@@ -15,13 +15,6 @@ needs fewer external dependencies than a typical full Valhalla build.
 cmake -B build -DCMAKE_BUILD_TYPE=Release
 make -C build
 ```
-NOTE: right now Valhalla fails to build with the latest GCC 12.2. Just use Clang
-or an older version of GCC. If you don't want to uninstall GCC 12, you can manually
-force a specific compiler binary to be executed like so:
-```sh
-export CC=clang
-export CXX=clang++
-```
 
 ### MacOS
 ```sh
