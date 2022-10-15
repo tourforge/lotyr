@@ -37,4 +37,4 @@ jobs:
     - uses: actions/upload-artifact@v3
       with:
         name: lotyr
-        path: ${{github.workspace}}/build/lotyr.dll
+        path: ${{github.workspace}}/build/Release/lotyr.dll
