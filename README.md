@@ -46,7 +46,7 @@ any programming language. Android and iOS support is planned but not yet complet
    Don't forget to replace `$HOME/Downloads/boost_1_80_0` with where you extracted Boost if you extracted it elsewhere.
    
    Tip: to speed up compilation, you can add `-jX` to the end of the `make` command, where X is the number of physical
-   CPUs you have. If you're not sure how many you have, you can add `-j$(nproc)` instead, which should still be faster.
+   CPU cores you have. If you're not sure how many you have, you can add `-j$(nproc)` instead, which should still be faster.
 
 ### MacOS
 1. Install [Xcode 14](https://developer.apple.com/xcode/).
