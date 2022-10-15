@@ -8,7 +8,9 @@
 #include <valhalla/tyr/actor.h>
 #include <valhalla/worker.h>
 
+#define _LOTYR_DLL_EXPORT
 #include "lotyr.h"
+#undef _LOTYR_DLL_EXPORT
 
 struct lotyr_t {
   std::unique_ptr<valhalla::tyr::actor_t> actor;
