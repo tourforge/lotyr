@@ -1,4 +1,8 @@
 # Lotyr
+![GitHub Workflow Status](https://img.shields.io/github/workflow/status/evresi/lotyr/Windows?label=Windows&style=for-the-badge)
+![GitHub Workflow Status](https://img.shields.io/github/workflow/status/evresi/lotyr/MacOS?label=MacOS&style=for-the-badge)
+![GitHub Workflow Status](https://img.shields.io/github/workflow/status/evresi/lotyr/Linux?label=Linux&style=for-the-badge)
+
 A library that wraps [Valhalla](https://github.com/valhalla/valhalla) to make it easy
 to embed in your own application written in any language. You can use exactly the same
 JSON routing API as you would if you were connecting to a Valhalla server over a network.
@@ -40,6 +44,9 @@ any programming language. Android and iOS support is planned but not yet complet
    make -C build
    ```
    Don't forget to replace `$HOME/Downloads/boost_1_80_0` with where you extracted Boost if you extracted it elsewhere.
+   
+   Tip: to speed up compilation, you can add `-jX` to the end of the `make` command, where X is the number of physical
+   CPUs you have. If you're not sure how many you have, you can add `-j$(nproc)` instead, which should still be faster.
 
 ### MacOS
 1. Install [Xcode 14](https://developer.apple.com/xcode/).
