@@ -11,6 +11,8 @@ extern "C" {
 #  else
 #    define _LOTYR_EXPORT __declspec(dllimport)
 #  endif
+#else
+#  define _LOTYR_EXPORT
 #endif
 
 typedef struct lotyr_t lotyr_t;
