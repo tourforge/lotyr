@@ -6,8 +6,13 @@ on:
     paths-ignore:
       - .github/workflows/linux.yml
       - .github/workflows/macos.yml
+      - README.md
   pull_request:
     branches: [ "main" ]
+    paths-ignore:
+      - .github/workflows/linux.yml
+      - .github/workflows/macos.yml
+      - README.md
 
 jobs:
   build:
