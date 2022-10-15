@@ -3,8 +3,16 @@ name: Linux
 on:
   push:
     branches: [ "main" ]
+    paths-ignore:
+      - .github/workflows/windows.yml
+      - .github/workflows/macos.yml
+      - README.md
   pull_request:
     branches: [ "main" ]
+    paths-ignore:
+      - .github/workflows/windows.yml
+      - .github/workflows/macos.yml
+      - README.md
 
 jobs:
   build:
