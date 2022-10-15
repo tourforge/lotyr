@@ -1,7 +1,7 @@
 # Lotyr
-![GitHub Workflow Status](https://img.shields.io/github/workflow/status/evresi/lotyr/Windows?label=Windows&style=for-the-badge)
-![GitHub Workflow Status](https://img.shields.io/github/workflow/status/evresi/lotyr/MacOS?label=MacOS&style=for-the-badge)
-![GitHub Workflow Status](https://img.shields.io/github/workflow/status/evresi/lotyr/Linux?label=Linux&style=for-the-badge)
+[![GitHub Workflow Status](https://img.shields.io/github/workflow/status/evresi/lotyr/Windows?label=Windows&style=for-the-badge)](https://github.com/evresi/lotyr/actions/workflows/windows.yml)
+[![GitHub Workflow Status](https://img.shields.io/github/workflow/status/evresi/lotyr/MacOS?label=MacOS&style=for-the-badge)](https://github.com/evresi/lotyr/actions/workflows/macos.yml)
+[![GitHub Workflow Status](https://img.shields.io/github/workflow/status/evresi/lotyr/Linux?label=Linux&style=for-the-badge)](https://github.com/evresi/lotyr/actions/workflows/linux.yml)
 
 A library that wraps [Valhalla](https://github.com/valhalla/valhalla) to make it easy
 to embed in your own application written in any language. You can use exactly the same
@@ -27,7 +27,7 @@ any programming language. Android and iOS support is planned but not yet complet
    sudo dnf install gcc-c++ cmake
    ```
    
-   Example - Arch Linux
+   Example - Arch Linux:
    ```sh
    sudo pacman -Syu base-devel git cmake
    ```
