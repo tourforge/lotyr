@@ -15,8 +15,8 @@ jobs:
     
     - name: Download and extract Boost 1.80.0
       run: |
-        wget https://boostorg.jfrog.io/artifactory/main/release/1.80.0/source/boost_1_80_0.tar.gz -O ${{github.workspace}}/boost
-        tar -xzvf boost_1_80_0.tar.gz
+        wget https://boostorg.jfrog.io/artifactory/main/release/1.80.0/source/boost_1_80_0.tar.gz -O ${{github.workspace}}/boost.tar.gz
+        tar -xzvf boost.tar.gz
 
     - name: Configure CMake
       run: cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DBOOST_ROOT=${{github.workspace}}/boost
