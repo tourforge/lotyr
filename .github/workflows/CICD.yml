@@ -77,9 +77,6 @@ jobs:
         with:
           path: ~/artifact
 
-      - name: Change Working Directory
-        run: cd ~/artifact
-
       - name: Create Automatic Release
         uses: marvinpinto/action-automatic-releases@latest
         with:
@@ -87,6 +84,6 @@ jobs:
           prerelease: false
           automatic_release_tag: latest
           files: |
-            **/liblotyr.so
-            **/lotyr.dll
-            **/liblotyr.dylib
+            /home/runner/artifact/linux/liblotyr.so
+            /home/runner/artifact/macos/lotyr.dll
+            /home/runner/artifact/windows/liblotyr.dylib
