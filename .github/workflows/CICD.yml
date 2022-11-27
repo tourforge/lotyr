@@ -1,4 +1,4 @@
-name: CICD
+name: Automatic Build and Release
 
 on:
   push:
@@ -85,5 +85,5 @@ jobs:
           automatic_release_tag: latest
           files: |
             /home/runner/artifact/linux/liblotyr.so
-            /home/runner/artifact/macos/lotyr.dll
-            /home/runner/artifact/windows/liblotyr.dylib
+            /home/runner/artifact/windows/lotyr.dll
+            /home/runner/artifact/macos/liblotyr.dylib
