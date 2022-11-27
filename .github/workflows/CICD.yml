@@ -1,0 +1,78 @@
+name: CICD
+
+on:
+  push:
+    branches: [ "main" ]
+    paths-ignore:
+    - README.md
+
+  pull_request:
+    branches: [ "main" ]
+    paths-ignore:
+    - README.md
+  
+  workflow_dispatch:
+
+jobs:
+  build:
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+
+    runs-on: ${{ matrix.os }}
+    steps:
+
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+        with:
+          submodules: recursive
+
+      - name: Configure Dependencies and Build
+        run: |
+          wget https://boostorg.jfrog.io/artifactory/main/release/1.80.0/source/boost_1_80_0.tar.gz -O ${{github.workspace}}/boost_1_80_0.tar.gz
+          tar -xzvf boost_1_80_0.tar.gz
+          cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=Release -DBOOST_ROOT=${{github.workspace}}/boost_1_80_0
+          cmake --build ${{github.workspace}}/build --config Release
+        shell: bash
+
+      - name: Linux - Upload Build Artifact
+        if: matrix.os == 'ubuntu-latest'
+        uses: actions/upload-artifact@v3
+        with:
+          name: linux
+          path: ${{ github.workspace }}/build/liblotyr.so
+
+      - name: Windows - Upload Build Artifact
+        if: matrix.os == 'windows-latest'
+        uses: actions/upload-artifact@v3
+        with:
+          name: windows
+          path: ${{ github.workspace }}/build/Release/lotyr.dll
+
+      - name: MacOS - Upload Build Artifact
+        if: matrix.os == 'macos-latest'
+        uses: actions/upload-artifact@v3
+        with:
+          name: macos
+          path: ${{ github.workspace }}/build/liblotyr.dylib
+
+  release:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+
+      - name: Download Build Artifact
+        uses: actions/download-artifact@v3
+        with:
+          path: ~/artifact
+
+      - name: Display structure of downloaded files
+        run: ls -R
+
+      # - name: Create Automatic Release
+      #   uses: marvinpinto/action-automatic-releases@latest
+      #   with:
+      #     repo_token: ${{ secrets.GITHUB_TOKEN }}
+      #     prerelease: true
+      #     automatic_release_tag: latest
+      #     files: 
