@@ -27,13 +27,23 @@ jobs:
         with:
           submodules: recursive
 
-      - name: Configure Dependencies and Build
+      - name: Windows - Download and Extract Boost 1.80.0
+        if: matrix.os == 'windows-latest'
+        run: |
+          Invoke-WebRequest -UseBasicParsing https://boostorg.jfrog.io/artifactory/main/release/1.80.0/source/boost_1_80_0.zip -OutFile ${{ github.workspace }}/boost_1_80_0.zip
+          tar -xf boost_1_80_0.zip
+
+      - name: Download and Extract Boost 1.80.0
+        if: matrix.os != 'windows-latest'
         run: |
           wget https://boostorg.jfrog.io/artifactory/main/release/1.80.0/source/boost_1_80_0.tar.gz -O ${{github.workspace}}/boost_1_80_0.tar.gz
           tar -xzvf boost_1_80_0.tar.gz
-          cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=Release -DBOOST_ROOT=${{github.workspace}}/boost_1_80_0
-          cmake --build ${{github.workspace}}/build --config Release
-        shell: bash
+
+      - name: Build
+        run: |
+          cmake -B ${{ github.workspace }}/build -DCMAKE_BUILD_TYPE=Release -DBOOST_ROOT=${{ github.workspace }}/boost_1_80_0
+          cmake --build ${{ github.workspace }}/build --config Release
+
 
       - name: Linux - Upload Build Artifact
         if: matrix.os == 'ubuntu-latest'
