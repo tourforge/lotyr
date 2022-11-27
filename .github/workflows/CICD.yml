@@ -37,13 +37,12 @@ jobs:
         if: matrix.os != 'windows-latest'
         run: |
           wget https://boostorg.jfrog.io/artifactory/main/release/1.80.0/source/boost_1_80_0.tar.gz -O ${{github.workspace}}/boost_1_80_0.tar.gz
-          tar -xzvf boost_1_80_0.tar.gz
+          tar -xzf boost_1_80_0.tar.gz
 
       - name: Build
         run: |
           cmake -B ${{ github.workspace }}/build -DCMAKE_BUILD_TYPE=Release -DBOOST_ROOT=${{ github.workspace }}/boost_1_80_0
           cmake --build ${{ github.workspace }}/build --config Release
-
 
       - name: Linux - Upload Build Artifact
         if: matrix.os == 'ubuntu-latest'
@@ -76,13 +75,11 @@ jobs:
         with:
           path: ~/artifact
 
-      - name: Display structure of downloaded files
-        run: ls -R
-
-      # - name: Create Automatic Release
-      #   uses: marvinpinto/action-automatic-releases@latest
-      #   with:
-      #     repo_token: ${{ secrets.GITHUB_TOKEN }}
-      #     prerelease: true
-      #     automatic_release_tag: latest
-      #     files: 
+      - name: Create Automatic Release
+        uses: marvinpinto/action-automatic-releases@latest
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          prerelease: false
+          automatic_release_tag: latest
+          files: |
+            ~/artifact/*
