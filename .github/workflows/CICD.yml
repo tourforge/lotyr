@@ -75,7 +75,10 @@ jobs:
       - name: Download Build Artifact
         uses: actions/download-artifact@v3
         with:
-          path: ~/
+          path: ~/artifact
+
+      - name: Change Working Directory
+        run: cd ~/artifact
 
       - name: Create Automatic Release
         uses: marvinpinto/action-automatic-releases@latest
@@ -84,6 +87,6 @@ jobs:
           prerelease: false
           automatic_release_tag: latest
           files: |
-            ~/linux/liblotyr.so
-            ~/windows/lotyr.dll
-            ~/macos/liblotyr.dylib
+            **/liblotyr.so
+            **/lotyr.dll
+            **/liblotyr.dylib
