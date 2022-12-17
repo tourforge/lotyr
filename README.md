@@ -1,7 +1,7 @@
 # Lotyr
-[![GitHub Workflow Status](https://img.shields.io/github/workflow/status/evresi/lotyr/Windows?label=Windows&style=for-the-badge)](https://github.com/evresi/lotyr/actions/workflows/windows.yml)
-[![GitHub Workflow Status](https://img.shields.io/github/workflow/status/evresi/lotyr/MacOS?label=MacOS&style=for-the-badge)](https://github.com/evresi/lotyr/actions/workflows/macos.yml)
-[![GitHub Workflow Status](https://img.shields.io/github/workflow/status/evresi/lotyr/Linux?label=Linux&style=for-the-badge)](https://github.com/evresi/lotyr/actions/workflows/linux.yml)
+[![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/opentourbuilder/lotyr/windows.yml?branch=main&label=Windows&style=for-the-badge)](https://github.com/evresi/lotyr/actions/workflows/windows.yml)
+[![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/opentourbuilder/lotyr/macos.yml?branch=main&label=MacOS&style=for-the-badge)](https://github.com/evresi/lotyr/actions/workflows/macos.yml)
+[![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/opentourbuilder/lotyr/linux.yml?branch=main&label=Linux&style=for-the-badge)](https://github.com/evresi/lotyr/actions/workflows/linux.yml)
 
 A library that wraps [Valhalla](https://github.com/valhalla/valhalla) to make it easy
 to embed in your own application written in any language. You can use exactly the same
