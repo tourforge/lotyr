@@ -56,6 +56,8 @@ set(ENABLE_HTTP OFF CACHE BOOL "Disable Valhalla HTTP server" FORCE)
 set(ENABLE_PYTHON_BINDINGS OFF CACHE BOOL "Disable Valhalla python bindings" FORCE)
 set(ENABLE_TESTS OFF CACHE BOOL "Disable Valhalla tests" FORCE)
 set(ENABLE_BENCHMARKS OFF CACHE BOOL "Disable Valhalla benchmarks" FORCE)
+set(ENABLE_SINGLE_FILES_WERROR OFF CACHE BOOL "Disable Valhalla -Werror since it often breaks things" FORCE)
+set(ENABLE_COMPILER_WARNINGS OFF CACHE BOOL "Disable warnings while compiling Valhalla" FORCE)
 add_subdirectory(third_party/valhalla)
 add_dependencies(valhalla zlibstatic libprotobuf)
 
