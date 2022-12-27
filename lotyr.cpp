@@ -20,9 +20,12 @@ struct lotyr_error_t {
   std::string message;
 };
 
-lotyr_error_t *lotyr_unknown_error() {
+lotyr_error_t *lotyr_unknown_error(std::exception& e) {
   lotyr_error_t *error = new lotyr_error_t;
-  error->message = std::string("Unknown error");
+  error->message = std::string("Unknown error (");
+  error->message.append(typeid(e).name());
+  error->message.append("): ");
+  error->message.append(e.what());
   return error;
 }
 
@@ -53,8 +56,8 @@ extern "C" lotyr_error_t *lotyr_new(lotyr_t **lotyr_dest,
     lotyr_error_t *error = new lotyr_error_t;
     error->message = e.message;
     return error;
-  } catch (...) { // TODO: better rapidjson error handling
-    return lotyr_unknown_error();
+  } catch (std::exception& e) {
+    return lotyr_unknown_error(e);
   }
 }
 
@@ -74,8 +77,8 @@ extern "C" lotyr_error_t *lotyr_route(lotyr_t *lotyr, const char *request,
     return nullptr;
   } catch (valhalla::valhalla_exception_t e) {
     return lotyr_valhalla_error(e);
-  } catch (...) {
-    return lotyr_unknown_error();
+  } catch (std::exception& e) {
+    return lotyr_unknown_error(e);
   }
 }
 
