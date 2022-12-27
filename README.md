@@ -1,14 +1,16 @@
 # Lotyr
-[![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/opentourbuilder/lotyr/windows.yml?branch=main&label=Windows&style=for-the-badge)](https://github.com/evresi/lotyr/actions/workflows/windows.yml)
-[![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/opentourbuilder/lotyr/macos.yml?branch=main&label=MacOS&style=for-the-badge)](https://github.com/evresi/lotyr/actions/workflows/macos.yml)
-[![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/opentourbuilder/lotyr/linux.yml?branch=main&label=Linux&style=for-the-badge)](https://github.com/evresi/lotyr/actions/workflows/linux.yml)
+[![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/opentourbuilder/lotyr/CICD.yml?style=for-the-badge)](https://github.com/evresi/lotyr/actions/workflows/CICD.yml)
 
-A library that wraps [Valhalla](https://github.com/valhalla/valhalla) to make it easy
-to embed in your own application written in any language. You can use exactly the same
-JSON routing API as you would if you were connecting to a Valhalla server over a network.
+A thin wrapper around [Valhalla](https://github.com/valhalla/valhalla) that statically links all
+dependencies and provides a simple C API for querying the Valhalla API within a single process.
+You can use exactly the same JSON routing API as you would if you were connecting to a Valhalla
+server over a network.
 
-Lotyr produces shared libraries for Windows, MacOS, and Linux that can be used from nearly
-any programming language. Android and iOS support is planned but not yet completed.
+Current limitations:
+- Only Windows, MacOS, and Linux builds are supported right now. Android builds should be pretty
+  easy to implement, and iOS should also be possible.
+- Only the routing API endpoint is usable from the library. Support for more of the endpoints can
+  be very easily added.
 
 ## Building
 ### Linux
