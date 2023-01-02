@@ -18,9 +18,9 @@ extern "C" {
 typedef struct lotyr_t lotyr_t;
 typedef struct lotyr_error_t lotyr_error_t;
 
-/// Creates a new routing engine context with the Valhalla configuration loaded
-/// from` config_path`. Stores a pointer to the context in `lotyr`.
-_LOTYR_EXPORT lotyr_error_t *lotyr_new(lotyr_t **lotyr, const char *config_path);
+/// Creates a new routing engine context with the Valhalla configuration parsed
+/// from `config`.
+_LOTYR_EXPORT lotyr_error_t *lotyr_new(lotyr_t **lotyr, const char *config);
 
 /// Frees the memory and resources associated with the given routing engine
 /// context.

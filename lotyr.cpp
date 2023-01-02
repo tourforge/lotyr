@@ -1,6 +1,7 @@
 #include <cstring>
 #include <exception>
 #include <memory>
+#include <string>
 
 #include <boost/property_tree/ptree.hpp>
 
@@ -20,43 +21,61 @@ struct lotyr_error_t {
   std::string message;
 };
 
-lotyr_error_t *lotyr_unknown_error(std::exception& e) {
+lotyr_error_t *lotyr_error(std::string message) {
   lotyr_error_t *error = new lotyr_error_t;
-  error->message = std::string("Unknown error (");
-  error->message.append(typeid(e).name());
-  error->message.append("): ");
-  error->message.append(e.what());
+  error->message = message;
   return error;
 }
 
+lotyr_error_t *lotyr_unknown_error(std::exception &e) {
+  std::string message("Unknown error (");
+  message.append(typeid(e).name());
+  message.append("): ");
+  message.append(e.what());
+  return lotyr_error(message);
+}
+
 lotyr_error_t *
-lotyr_valhalla_error(valhalla::valhalla_exception_t valhalla_error) {
-  lotyr_error_t *error = new lotyr_error_t;
-  error->message = valhalla_error.message;
-  return error;
+lotyr_valhalla_error(valhalla::valhalla_exception_t &valhalla_error) {
+  std::string message("Valhalla error: ");
+  message.append(valhalla_error.message);
+  return lotyr_error(message);
 }
 
 // TODO: make sure there are no memory leaks in the case of errors
 
-extern "C" lotyr_error_t *lotyr_new(lotyr_t **lotyr_dest,
-                                    const char *config_path) {
+extern "C" lotyr_error_t *lotyr_new(lotyr_t **lotyr_dest, const char *config) {
   try {
-    // Load the configuration
-    std::string config_file(config_path);
-    boost::property_tree::ptree config;
-    rapidjson::read_json(config_file, config);
+    // Parse the configuration
+    boost::property_tree::ptree config_pt;
+    rapidjson::Document config_doc;
+    config_doc.Parse(config);
+
+    if (config_doc.HasParseError()) {
+      std::string message(
+          "Failed to parse configuration: RapidJSON error code ");
+      message.append(std::to_string(config_doc.GetParseError()));
+      return lotyr_error(message);
+    }
+
+    if (config_doc.IsObject()) {
+      rapidjson::add_object(
+          const_cast<const rapidjson::Document *>(&config_doc)->GetObject(),
+          config_pt);
+    } else {
+      return lotyr_error(std::string(
+          "Failed to parse configuration: Configuration must be an object"));
+    }
 
     lotyr_t *lotyr = new lotyr_t;
     lotyr->actor = std::make_unique<valhalla::tyr::actor_t>(
-        valhalla::tyr::actor_t(config));
+        valhalla::tyr::actor_t(config_pt));
     *lotyr_dest = lotyr;
 
     return nullptr;
   } catch (valhalla::valhalla_exception_t e) {
-    lotyr_error_t *error = new lotyr_error_t;
-    error->message = e.message;
-    return error;
-  } catch (std::exception& e) {
+    return lotyr_valhalla_error(e);
+  } catch (std::exception &e) {
     return lotyr_unknown_error(e);
   }
 }
@@ -77,7 +96,7 @@ extern "C" lotyr_error_t *lotyr_route(lotyr_t *lotyr, const char *request,
     return nullptr;
   } catch (valhalla::valhalla_exception_t e) {
     return lotyr_valhalla_error(e);
-  } catch (std::exception& e) {
+  } catch (std::exception &e) {
     return lotyr_unknown_error(e);
   }
 }
