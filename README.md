@@ -1,6 +1,8 @@
 # Lotyr
 [![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/opentourbuilder/lotyr/CICD.yml?style=for-the-badge)](https://github.com/evresi/lotyr/actions/workflows/CICD.yml)
 
+**This repository is archived because OpenTourBuilder no longer uses it to generate route instructions.**
+
 A thin wrapper around [Valhalla](https://github.com/valhalla/valhalla) that statically links all
 dependencies and provides a simple C API for querying the Valhalla API within a single process.
 You can use exactly the same JSON routing API as you would if you were connecting to a Valhalla
